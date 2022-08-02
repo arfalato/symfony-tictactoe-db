@@ -21,7 +21,9 @@ class BoardController extends AbstractController
     const OK = 200;
     
     const BAD_REQUEST = 400;
-     
+    
+    const NOT_FOUND = 404;
+    
     private Board $board;
      
     private ManagerRegistry $doctrine;
@@ -54,27 +56,24 @@ class BoardController extends AbstractController
         $repo = new BoardRepository($this->doctrine);
         $deleted = $repo->delete($id);
         if(isset($deleted['error'])) {
-            return $this->json($deleted, 404);            
+            return $this->json($deleted, self::NOT_FOUND);            
         }
         
         return $this->json(['Board' => 'deleted', 'id' => $deleted], self::OK);
     }
     
     /**
-     * @Route("/board", name="board_put", methods={"PUT"})
+     * @Route("/board/{id}", name="board_put", methods={"PUT"})
      */
-    public function put(Request $request): Response
+    public function put(int $id, Request $request): Response
     {
         $payload = json_decode((string) $request->getContent(), true);
         $validator = $this->validator->validateParams((array) $payload);
 
         if (count($validator['error']) > 0) {
-            return $this->json($validator + ['Board' => unserialize($this->board->getGrid())], self::BAD_REQUEST);
+            return $this->json($validator + ['Board' => unserialize($this->board->getGrid()), 'id' => $id], self::BAD_REQUEST);
         }
         
-        //$move = $this->service ->move((array) $payload);
-        
-        //return $this->json($move['grid'], (int) $move['status']);
         return $this->json('ok', 200);
     }
 }
