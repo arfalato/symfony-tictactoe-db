@@ -16,4 +16,9 @@ RUN docker-php-ext-install zip \
 
 ADD . /app
 WORKDIR /app
-CMD bash -c "symfony server:start --port=3160"
+CMD bash -c "composer install \
+&& sleep 5 \
+&& php bin/console doctrine:database:create \
+&& sleep 4 \
+&& php bin/console doctrine:migrations:migrate --no-interaction \
+&& symfony server:start --port=3160"
