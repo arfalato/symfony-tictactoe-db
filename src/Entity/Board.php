@@ -29,9 +29,9 @@ class Board
         return $this->id;
     }
 
-    public function getGrid(): ?string
+    public function getGrid(): ?array
     {
-        return $this->grid;
+        return unserialize($this->grid);
     }
 
     public function setGrid(array $grid): self
@@ -63,5 +63,17 @@ class Board
         $this->date = $date;
 
         return $this;
+    }
+
+    public function switchTurn() : void
+    {
+        switch ($this->getTurn()) {
+            case 'X':
+                $this->setTurn('O');
+                break;
+            default:
+                $this->setTurn('X');
+                break;
+        }
     }
 }

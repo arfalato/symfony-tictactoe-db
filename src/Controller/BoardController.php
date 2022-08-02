@@ -45,7 +45,7 @@ class BoardController extends AbstractController
     {
         $repo = new BoardRepository($this->doctrine);
         $repo->add($this->board, true);
-        return $this->json(['Board' => unserialize($this->board->getGrid()), 'id' => $this->board->getId()], self::OK);
+        return $this->json(['Board' => $this->board->getGrid(), 'id' => $this->board->getId()], self::OK);
     }
    
    /**
@@ -65,15 +65,17 @@ class BoardController extends AbstractController
     /**
      * @Route("/board/{id}", name="board_put", methods={"PUT"})
      */
-    public function put(int $id, Request $request): Response
+    public function put(int $id, Request $request): JsonResponse
     {
         $payload = json_decode((string) $request->getContent(), true);
         $validator = $this->validator->validateParams((array) $payload);
 
         if (count($validator['error']) > 0) {
-            return $this->json($validator + ['Board' => unserialize($this->board->getGrid()), 'id' => $id], self::BAD_REQUEST);
+            return $this->json($validator + ['Board' => $this->board->getGrid(), 'id' => $id], self::BAD_REQUEST);
         }
         
-        return $this->json('ok', 200);
+        $repo = new BoardRepository($this->doctrine);
+        $move = $repo->update($id, $payload, true);
+        return $this->json($move['grid'], (int) $move['status']);
     }
 }
