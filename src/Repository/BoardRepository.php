@@ -15,24 +15,31 @@ class BoardRepository extends ServiceEntityRepository
     
     const NOT_FOUND = 404;
     
+    const EMPTY_GRID = [
+        [null, null, null],
+        [null, null, null],
+        [null, null, null]
+    ];
+    
+    const FIRST_MOVE = 'X';
+    
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Board::class);
     }
 
-    public function add(Board $entity, bool $flush = false): void
+    public function add(Board $entity): void
     {
-        $entity->setGrid([[null, null, null], [null, null, null], [null, null, null]]);
-        $entity->setTurn('X');
+        $entity->setGrid(self::EMPTY_GRID);
+        $entity->setTurn(self::FIRST_MOVE);
         $entity->setDate(new \DateTime());
+        
         $this->getEntityManager()->persist($entity);
-
-        if ($flush) {
-            $this->getEntityManager()->flush();
-        }
+        $this->getEntityManager()->flush();
+        
     }
 
-    public function update(int $id, array $params, bool $flush = false): array
+    public function update(int $id, array $params): array
     {
         $entity = $this->getEntityManager()->find(Board::class, $id);
         if (!$entity) {
@@ -51,8 +58,8 @@ class BoardRepository extends ServiceEntityRepository
         if(!empty($turn) && $turn != $symbol) {
 
             return [
-             'grid' => ['error' => "It's not your turn", 'Board' => $entity->getGrid()], 
-             'status' => self::BAD_REQUEST
+                'grid' => ['error' => "It's not your turn", 'Board' => $entity->getGrid()], 
+                'status' => self::BAD_REQUEST
             ];
         }
 
@@ -66,18 +73,16 @@ class BoardRepository extends ServiceEntityRepository
             $entity->switchTurn();
             
             $result = [
-            'grid' => ['Board' => $entity->getGrid()], 
-            'status' => self::OK
+                'grid' => ['Board' => $entity->getGrid()], 
+                'status' => self::OK
             ] ;
         } else {
 
             return [
-            'grid' => ['error'=> "POSITION ALREADY MARKED", 'Board' => $entity->getGrid()], 
-            'status' => self::BAD_REQUEST
+                'grid' => ['error'=> "POSITION ALREADY MARKED", 'Board' => $entity->getGrid()], 
+                'status' => self::BAD_REQUEST
             ];
         }
-        
-        
         
         
         $winner = new Winner($entity->getGrid());
@@ -89,16 +94,16 @@ class BoardRepository extends ServiceEntityRepository
         if ($getWinner) {
 
             return [
-            'grid' => ['winner' => $getWinner, 'Board' => $entity->getGrid()], 
-            'status' => self::OK
+                'grid' => ['winner' => $getWinner, 'Board' => $entity->getGrid()], 
+                'status' => self::OK
             ];
         }
 
         if($draw) {
 
             return [
-              'grid' => ['winner' => "DRAW", 'Board' => $entity->getGrid()], 
-              'status' => self::OK
+                'grid' => ['winner' => "DRAW", 'Board' => $entity->getGrid()], 
+                'status' => self::OK
             ];
         }
 
@@ -106,14 +111,14 @@ class BoardRepository extends ServiceEntityRepository
         $entity->setDate(new \DateTime());
         $this->getEntityManager()->persist($entity);
 
-        if ($flush) {
-            $this->getEntityManager()->flush();
-        }
+        
+        $this->getEntityManager()->flush();
+       
         
         return $result;
     }
     
-    public function delete(int $id) : int
+    public function delete(int $id) : array
     {
         $boardToFind = $this->getEntityManager()->find(Board::class, $id);
         if (!$boardToFind) {
@@ -121,20 +126,17 @@ class BoardRepository extends ServiceEntityRepository
         }
         $this->getEntityManager()->remove($boardToFind);
         $this->getEntityManager()->flush();
-        return $id;
+        return ['id' => $id];
     }
     
-    private function findBoard($id) : Board
+    public function findBoard($id) : Board
     {
         return $this->getEntityManager()->find(Board::class, $id);
     }
     
-    private function remove(Board $entity, bool $flush = false): void
+    private function remove(Board $entity): void
     {
         $this->getEntityManager()->remove($entity);
-
-        if ($flush) {
-            $this->getEntityManager()->flush();
-        }
+        $this->getEntityManager()->flush();   
     }
 }

@@ -36,6 +36,7 @@ class BoardController extends AbstractController
         $this->board = $board;
         $this->doctrine = $doctrine;
         $this->validator = $validator;
+        $this->repo = new BoardRepository($this->doctrine);
     }
     
    /**
@@ -43,8 +44,7 @@ class BoardController extends AbstractController
      */
     public function post(): JsonResponse
     {
-        $repo = new BoardRepository($this->doctrine);
-        $repo->add($this->board, true);
+        $this->repo->add($this->board);
         return $this->json(['Board' => $this->board->getGrid(), 'id' => $this->board->getId()], self::OK);
     }
    
@@ -53,13 +53,13 @@ class BoardController extends AbstractController
      */
     public function delete(int $id): JsonResponse
     {
-        $repo = new BoardRepository($this->doctrine);
-        $deleted = $repo->delete($id);
+        $deleted = $this->repo->delete($id);
+        
         if(isset($deleted['error'])) {
             return $this->json($deleted, self::NOT_FOUND);            
         }
         
-        return $this->json(['Board' => 'deleted', 'id' => $deleted], self::OK);
+        return $this->json(['Board' => 'deleted', 'id' => $deleted['id']], self::OK);
     }
     
     /**
@@ -71,11 +71,12 @@ class BoardController extends AbstractController
         $validator = $this->validator->validateParams((array) $payload);
 
         if (count($validator['error']) > 0) {
-            return $this->json($validator + ['Board' => $this->board->getGrid(), 'id' => $id], self::BAD_REQUEST);
+            $actualBoard = $this->repo->findBoard($id);
+            return $this->json($validator + ['Board' => $actualBoard->getGrid()], self::BAD_REQUEST);
         }
         
-        $repo = new BoardRepository($this->doctrine);
-        $move = $repo->update($id, $payload, true);
+        $move = $this->repo->update($id, $payload);
+        
         return $this->json($move['grid'], (int) $move['status']);
     }
 }
