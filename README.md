@@ -2,7 +2,7 @@
 symfony tic-tac-toe game with DB
 
 ENVIRONMENT
-- LAP and composer
+- LAMP and composer
 
 INSTALLATION
 - clone/get repository content
