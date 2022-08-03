@@ -36,12 +36,11 @@ class BoardRepository extends ServiceEntityRepository
         
         $this->getEntityManager()->persist($entity);
         $this->getEntityManager()->flush();
-        
     }
 
     public function update(int $id, array $params): array
     {
-        $entity = $this->getEntityManager()->find(Board::class, $id);
+        $entity = $this->findBoard($id);
         if (!$entity) {
              return [
                  'grid' => ['error' => 'No Board found for id ' . $id, 'Board' => null], 
@@ -110,8 +109,6 @@ class BoardRepository extends ServiceEntityRepository
         
         $entity->setDate(new \DateTime());
         $this->getEntityManager()->persist($entity);
-
-        
         $this->getEntityManager()->flush();
        
         
@@ -120,21 +117,23 @@ class BoardRepository extends ServiceEntityRepository
     
     public function delete(int $id) : array
     {
-        $boardToFind = $this->getEntityManager()->find(Board::class, $id);
-        if (!$boardToFind) {
+        $boardToFind = $this->findBoard($id);
+        
+        if (is_null($boardToFind)) {
             return ['error' => 'No Board found for id ' . $id];
         }
-        $this->getEntityManager()->remove($boardToFind);
-        $this->getEntityManager()->flush();
+        
+        $this->removeBoard($boardToFind);
+        
         return ['id' => $id];
     }
     
-    public function findBoard($id) : Board
+    public function findBoard($id) : ?Board
     {
         return $this->getEntityManager()->find(Board::class, $id);
     }
     
-    private function remove(Board $entity): void
+    private function removeBoard(Board $entity): void
     {
         $this->getEntityManager()->remove($entity);
         $this->getEntityManager()->flush();   
