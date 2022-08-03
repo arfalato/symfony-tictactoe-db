@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Board;
+use App\Entity\Winner;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -60,6 +61,10 @@ class BoardRepository extends ServiceEntityRepository
          if(is_null($grid[$row][$column])) {
              
             $grid[$row][$column] = $symbol;
+            $entity->setGrid($grid);
+            $entity->setTurn($symbol);
+            $entity->switchTurn();
+            
             $result = [
             'grid' => ['Board' => $entity->getGrid()], 
             'status' => self::OK
@@ -73,15 +78,12 @@ class BoardRepository extends ServiceEntityRepository
         }
         
         
-        $entity->setGrid($grid);
         
-        $entity->setTurn($symbol);
-        $entity->switchTurn();
         
         $winner = new Winner($entity->getGrid());
         $getWinner = $winner->getWinner();
 
-        $fulfilled = $this->checkGridFulfilled();
+        $fulfilled = $winner->checkGridFulfilled();
         $draw = $winner->checkDraw($fulfilled);
 
         if ($getWinner) {
@@ -107,17 +109,11 @@ class BoardRepository extends ServiceEntityRepository
         if ($flush) {
             $this->getEntityManager()->flush();
         }
-        //$boardToFind = $this->getEntityManager()->find(Board::class, $id);
         
-       /* $result = [
-            'grid' => ['Board' => $boardToFind->getGrid()], 
-            'status' => self::OK
-        ];
-            */
         return $result;
     }
     
-    public function delete()
+    public function delete(int $id) : int
     {
         $boardToFind = $this->getEntityManager()->find(Board::class, $id);
         if (!$boardToFind) {
@@ -128,12 +124,12 @@ class BoardRepository extends ServiceEntityRepository
         return $id;
     }
     
-    public function findBoard($id)
+    private function findBoard($id) : Board
     {
         return $this->getEntityManager()->find(Board::class, $id);
     }
     
-    public function remove(Board $entity, bool $flush = false): void
+    private function remove(Board $entity, bool $flush = false): void
     {
         $this->getEntityManager()->remove($entity);
 
