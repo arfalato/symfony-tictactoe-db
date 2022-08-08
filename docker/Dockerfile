@@ -12,8 +12,6 @@ RUN docker-php-ext-install zip \
 && docker-php-ext-configure intl \
 && docker-php-ext-install intl \
 && docker-php-ext-install opcache
-
-
 ADD . /app
 WORKDIR /app
 CMD bash -c "composer install \
