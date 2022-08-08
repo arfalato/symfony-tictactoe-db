@@ -8,12 +8,14 @@ INSTALLATION
 - clone/get repository content
 - run "docker-compose up -d"
 
+DEFAULT HOST
+localhost:3160
 
 API ENDPOINTS PROVIDED
 
 - to create a board
 ``` 
-POST /api/create
+POST /api/board
 ``` 
 - to destroy a board
 ``` 
