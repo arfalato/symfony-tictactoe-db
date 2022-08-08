@@ -1,15 +1,14 @@
 version: "3.7"
 services:
-  web-server:
+ web-server:
     build:
-      dockerfile: docker/Dockerfile
+      dockerfile: docker/apache/Dockerfile
       context: .
-    restart: always
     volumes:
       - "./:/var/www/html/"
     ports:
       - "8080:80"
-  mysql-server:
+ mysql-server:
     image: mariadb:10.4
     command: --default-authentication-plugin=mysql_native_password
     restart: always
@@ -18,5 +17,11 @@ services:
       MYSQL_ROOT_HOST: '%' 
     volumes:
       - mysql-data:/var/lib/mysql
+ my-app:
+   env_file:
+    - .env
+   build:
+     dockerfile: docker/app/Dockerfile
+     context: . 
 volumes:
   mysql-data:
