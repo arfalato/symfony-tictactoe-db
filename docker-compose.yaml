@@ -1,12 +1,12 @@
 version: "3.7"
 services:
  apache:
-    build:
+   build:
       dockerfile: docker/apache/Dockerfile
       context: .
-    volumes:
+   volumes:
       - "./:/var/www/html/"
-    ports:
+   ports:
       - "8080:80"
  maria-db:
     image: mariadb:10.4

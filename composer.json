@@ -23,7 +23,8 @@
         "symfony/yaml": "6.1.*"
     },
     "require-dev": {
-        "phpunit/phpunit": "^8.5"
+        "phpunit/phpunit": "^8.5",
+        "symfony/phpunit-bridge": "^6.0"
     },
     "config": {
         "allow-plugins": {
