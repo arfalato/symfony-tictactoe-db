@@ -69,7 +69,7 @@ curl -X PUT \
   http://localhost:/api/board/10 \
   -H 'cache-control: no-cache' \
   -H 'content-type: application/json' \
-  -d '  {
+  -d '{
   "symbol":"X",
   "row":1,
   "column": 0
@@ -101,7 +101,7 @@ curl -X PUT \
   http://localhost:8080/api/board/10 \
   -H 'cache-control: no-cache' \
   -H 'content-type: application/json' \
-  -d '  {
+  -d '{
   "symbol":"O",
   "row":1,
   "column": 1
@@ -133,7 +133,7 @@ curl -X PUT \
   http://localhost:8080/api/board/10 \
   -H 'cache-control: no-cache' \
   -H 'content-type: application/json' \
-  -d '  {
+  -d '{
   "symbol":"X",
   "row":2,
   "column": 0
@@ -165,7 +165,7 @@ curl -X PUT \
   http://localhost:8080/api/board/10 \
   -H 'cache-control: no-cache' \
   -H 'content-type: application/json' \
-  -d '  {
+  -d '{
   "symbol":"O",
   "row":2,
   "column": 1
@@ -197,7 +197,7 @@ curl -X PUT \
   http://localhost:8080/api/board/10\
   -H 'cache-control: no-cache' \
   -H 'content-type: application/json' \
-  -d '  {
+  -d '{
   "symbol":"X",
   "row":0,
   "column": 0
