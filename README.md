@@ -10,7 +10,7 @@ INSTALLATION
 
 DEFAULT HOST  
 ```
-localhost:3160
+localhost:8080
 ```  
 
 API ENDPOINTS PROVIDED
@@ -37,7 +37,7 @@ GAME EXAMPLE
 - CREATE BOARD
 ``` 
 curl -X POST \
-  http://localhost:3160/api/board \
+  http://localhost:8080/api/board \
   -H 'cache-control: no-cache' \
   -H 'content-type: application/json'
 
@@ -66,7 +66,7 @@ Response
 MOVES (Notice: X moves first by design)
 ``` 
 curl -X PUT \
-  http://localhost:3160/api/board/10 \
+  http://localhost:/api/board/10 \
   -H 'cache-control: no-cache' \
   -H 'content-type: application/json' \
   -d '  {
@@ -98,7 +98,7 @@ Response
 ``` 
 ``` 
 curl -X PUT \
-  http://localhost:3160/api/board/10 \
+  http://localhost:8080/api/board/10 \
   -H 'cache-control: no-cache' \
   -H 'content-type: application/json' \
   -d '  {
@@ -130,7 +130,7 @@ Response
 ``` 
 ``` 
 curl -X PUT \
-  http://localhost:3160/api/board/10 \
+  http://localhost:8080/api/board/10 \
   -H 'cache-control: no-cache' \
   -H 'content-type: application/json' \
   -d '  {
@@ -162,7 +162,7 @@ Response
 ``` 
 ``` 
 curl -X PUT \
-  http://localhost:3160/api/board/10 \
+  http://localhost:8080/api/board/10 \
   -H 'cache-control: no-cache' \
   -H 'content-type: application/json' \
   -d '  {
@@ -194,7 +194,7 @@ Response
 ``` 
 ``` 
 curl -X PUT \
-  http://localhost:3160/api/board/10\
+  http://localhost:8080/api/board/10\
   -H 'cache-control: no-cache' \
   -H 'content-type: application/json' \
   -d '  {
@@ -228,7 +228,7 @@ Response
 DESTROY BOARD
 ``` 
 curl -X DELETE \
-  http://localhost:3160/api/board/10 \
+  http://localhost:8080/api/board/10 \
   -H 'cache-control: no-cache'
 
 Response
