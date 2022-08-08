@@ -10,4 +10,9 @@ RUN apt-get update -y && apt-get install -y \
     apache2 \
     apache2-utils 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
-CMD bash -c "composer install && /usr/sbin/apache2ctl -D FOREGROUND"
+CMD bash -c "composer install \
+&& sleep 5 \
+&& php bin/console doctrine:database:create \
+&& sleep 4 \
+&& php bin/console doctrine:migrations:migrate --no-interaction \
+&& /usr/sbin/apache2ctl -D FOREGROUND"

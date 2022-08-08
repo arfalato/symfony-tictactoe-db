@@ -238,5 +238,18 @@ Response
 }
 
 ``` 
+
+RUN UNIT TESTS FROM DOCKER CLI  
+``` 
+root@5c1bc2558b8d:/var/www/html# php bin/phpunit
+PHPUnit 8.5.28 
+
+....................                                              20 / 20 (100%)
+
+Time: 807 ms, Memory: 6.00 MB
+
+OK (20 tests, 20 assertions)
+```   
+
 WHAT MISSED
 - One player game VS computer
