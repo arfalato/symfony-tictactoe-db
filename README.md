@@ -8,8 +8,10 @@ INSTALLATION
 - clone/get repository content
 - run "docker-compose up -d"
 
-DEFAULT HOST
+DEFAULT HOST  
+```
 localhost:3160
+```  
 
 API ENDPOINTS PROVIDED
 
