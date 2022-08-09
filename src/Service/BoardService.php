@@ -23,7 +23,7 @@ class BoardService
         $this->board = $board;
     }
     
-    public function findAll()
+    public function findAll() : array
     {
         $find = $this->repo->findAll();
         
