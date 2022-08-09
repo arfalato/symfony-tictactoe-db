@@ -27,7 +27,7 @@ DELETE /api/board/{id}
 ```  
 GET /api/board
 ``` 
-Reponse
+Response example  
 ``` 
 {
     "3": [
