@@ -31,7 +31,7 @@ class BoardController extends AbstractController
     
     private BoardValidator $validator;
     
-	private BoardRepository $repo;
+    private BoardRepository $repo;
      
     public function __construct(Board $board, ManagerRegistry $doctrine, BoardRepository $repo, BoardValidator $validator)
     {
