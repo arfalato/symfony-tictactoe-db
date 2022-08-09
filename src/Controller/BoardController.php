@@ -7,7 +7,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
-use App\Repository\BoardRepository;
+use App\Service\BoardService;
+use App\Repository\BoardRepository ;
 use App\Entity\Board;
 use App\Validator\BoardValidator;
 use Doctrine\Persistence\ManagerRegistry;
@@ -29,14 +30,14 @@ class BoardController extends AbstractController
     private ManagerRegistry $doctrine;
     
     private BoardValidator $validator;
+    
+	private BoardRepository $repo;
      
-     
-    public function __construct(Board $board, ManagerRegistry $doctrine, BoardValidator $validator)
+    public function __construct(Board $board, ManagerRegistry $doctrine, BoardRepository $repo, BoardValidator $validator)
     {
         $this->board = $board;
-        $this->doctrine = $doctrine;
         $this->validator = $validator;
-        $this->repo = new BoardRepository($this->doctrine);
+        $this->service = new BoardService($repo);
     }
     
    /**
@@ -44,7 +45,7 @@ class BoardController extends AbstractController
      */
     public function post(): JsonResponse
     {
-        $this->repo->add($this->board);
+        $this->service->post($this->board);
         return $this->json(['Board' => $this->board->getGrid(), 'id' => $this->board->getId()], self::OK);
     }
    
@@ -53,7 +54,7 @@ class BoardController extends AbstractController
      */
     public function delete(int $id): JsonResponse
     {
-        $deleted = $this->repo->delete($id);
+        $deleted =  $this->service->delete($id);
         
         if(isset($deleted['error'])) {
             return $this->json($deleted, self::NOT_FOUND);            
@@ -71,11 +72,11 @@ class BoardController extends AbstractController
         $validator = $this->validator->validateParams((array) $payload);
 
         if (count($validator['error']) > 0) {
-            $actualBoard = $this->repo->findBoard($id);
+            $actualBoard =  $this->service->findBoard($id);
             return $this->json($validator + ['Board' => $actualBoard->getGrid()], self::BAD_REQUEST);
         }
         
-        $move = $this->repo->update($id, $payload);
+        $move = $this->service->update($id, $payload);
         
         return $this->json($move['grid'], (int) $move['status']);
     }
