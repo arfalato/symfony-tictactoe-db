@@ -10,9 +10,7 @@ use Doctrine\Persistence\ManagerRegistry;
 class BoardRepository extends ServiceEntityRepository
 {
     const BAD_REQUEST = 400;
-    
     const OK = 200;
-    
     const NOT_FOUND = 404;
     
     const EMPTY_GRID = [

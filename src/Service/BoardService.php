@@ -16,7 +16,6 @@ class BoardService
     const NOT_FOUND = 404;
     const BAD_REQUEST = 400;
     
-   
     public function __construct(BoardRepository $repo, BoardValidator $validator, Board $board)
     {
         $this->repo = $repo;

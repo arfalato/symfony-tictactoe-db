@@ -16,9 +16,7 @@ use App\Service\BoardService;
 class BoardController extends AbstractController
 {
     
-    private ManagerRegistry $doctrine;
-    
-    private BoardRepository $repo;
+    private BoardService $service;
      
     public function __construct(BoardService $service)
     {
@@ -50,7 +48,6 @@ class BoardController extends AbstractController
     {
         $payload = json_decode((string) $request->getContent(), true);
         $move = $this->service->update($id, (array) $payload);
-        
         return $this->json($move['message'], (int) $move['status']);
     }
 }
