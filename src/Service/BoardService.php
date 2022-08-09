@@ -9,14 +9,14 @@ use App\Validator\BoardValidator;
 class BoardService
 {
     private BoardRepository $repo;
+    private BoardValidator $validator;
+    private Board $board;
     
     const OK = 200;
     const NOT_FOUND = 404;
     const BAD_REQUEST = 400;
     
-    private BoardValidator $validator;
-    private Board $board;
-    
+   
     public function __construct(BoardRepository $repo, BoardValidator $validator, Board $board)
     {
         $this->repo = $repo;

@@ -8,7 +8,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Service\BoardService;
-use App\Entity\Board;
 
 
 /**
@@ -17,8 +16,6 @@ use App\Entity\Board;
 class BoardController extends AbstractController
 {
     
-    
-     
     private ManagerRegistry $doctrine;
     
     private BoardRepository $repo;
