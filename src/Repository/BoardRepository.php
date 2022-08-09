@@ -43,7 +43,7 @@ class BoardRepository extends ServiceEntityRepository
         $entity = $this->findBoard($id);
         if (!$entity) {
              return [
-                 'grid' => ['error' => 'No Board found for id ' . $id, 'Board' => null], 
+                 'message' => ['error' => 'No Board found for id ' . $id, 'Board' => null], 
                  'status' => self::NOT_FOUND
             ];
             
@@ -57,7 +57,7 @@ class BoardRepository extends ServiceEntityRepository
         if(!empty($turn) && $turn != $symbol) {
 
             return [
-                'grid' => ['error' => "It's not your turn", 'Board' => $entity->getGrid()], 
+                'message' => ['error' => "It's not your turn", 'Board' => $entity->getGrid()], 
                 'status' => self::BAD_REQUEST
             ];
         }
@@ -72,13 +72,13 @@ class BoardRepository extends ServiceEntityRepository
             $entity->switchTurn();
             
             $result = [
-                'grid' => ['Board' => $entity->getGrid()], 
+                'message' => ['Board' => $entity->getGrid()], 
                 'status' => self::OK
             ] ;
         } else {
 
             return [
-                'grid' => ['error'=> "POSITION ALREADY MARKED", 'Board' => $entity->getGrid()], 
+                'message' => ['error'=> "POSITION ALREADY MARKED", 'Board' => $entity->getGrid()], 
                 'status' => self::BAD_REQUEST
             ];
         }
@@ -93,7 +93,7 @@ class BoardRepository extends ServiceEntityRepository
         if ($getWinner) {
 
             return [
-                'grid' => ['winner' => $getWinner, 'Board' => $entity->getGrid()], 
+                'message' => ['winner' => $getWinner, 'Board' => $entity->getGrid()], 
                 'status' => self::OK
             ];
         }
@@ -101,7 +101,7 @@ class BoardRepository extends ServiceEntityRepository
         if($draw) {
 
             return [
-                'grid' => ['winner' => "DRAW", 'Board' => $entity->getGrid()], 
+                'message' => ['winner' => "DRAW", 'Board' => $entity->getGrid()], 
                 'status' => self::OK
             ];
         }
