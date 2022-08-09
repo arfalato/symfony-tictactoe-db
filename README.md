@@ -23,6 +23,83 @@ POST /api/board
 ``` 
 DELETE /api/board/{id}
 ``` 
+- to get all boards
+```  
+GET /api/board
+``` 
+Reponse
+``` 
+{
+    "3": [
+        [
+            null,
+            null,
+            null
+        ],
+        [
+            null,
+            null,
+            null
+        ],
+        [
+            null,
+            null,
+            null
+        ]
+    ],
+    "8": [
+        [
+            null,
+            null,
+            null
+        ],
+        [
+            "X",
+            "O",
+            null
+        ],
+        [
+            "X",
+            "O",
+            null
+        ]
+    ],
+    "9": [
+        [
+            "X",
+            null,
+            null
+        ],
+        [
+            null,
+            null,
+            null
+        ],
+        [
+            null,
+            null,
+            null
+        ]
+    ],
+    "10": [
+        [
+            null,
+            null,
+            null
+        ],
+        [
+            null,
+            null,
+            null
+        ],
+        [
+            null,
+            null,
+            null
+        ]
+    ]
+}
+``` 
 - to make a move
 ``` 
 PUT /api/board/{id}

@@ -131,6 +131,19 @@ class BoardRepository extends ServiceEntityRepository
         return $this->getEntityManager()->find(Board::class, $id);
     }
     
+    public function findAll() : array
+    {
+        $entityManager = $this->getEntityManager();
+        $query = $entityManager->createQuery('SELECT b.grid as board, b.id FROM App\Entity\Board b ORDER BY b.id ASC');
+        $result = [];
+        $fetch = [];
+        $result = array_column($query->getResult(), 'board', 'id');
+        foreach ($result as $id => $value){
+            $fetch[$id] = unserialize($value);
+        }
+        return $fetch;
+    }
+    
     private function removeBoard(Board $entity): void
     {
         $this->getEntityManager()->remove($entity);

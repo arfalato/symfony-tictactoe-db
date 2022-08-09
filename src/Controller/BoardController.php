@@ -23,6 +23,15 @@ class BoardController extends AbstractController
          $this->service = $service;
     }
     
+	/**
+     * @Route("/board", name="board_get", methods={"GET"})
+     */
+    public function get(): JsonResponse
+    {
+        $find = $this->service->findAll();
+        return $this->json($find['message'], $find['status']);
+    }
+	
    /**
      * @Route("/board", name="board_post", methods={"POST"})
      */
