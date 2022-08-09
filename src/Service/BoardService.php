@@ -24,17 +24,17 @@ class BoardService
     }
 	
     public function findAll()
-	{
-		$find = $this->repo->findAll();
-		if (empty($find)) {
-			$find['message'] = ['No board found'];
-			$find['status'] = self::NOT_FOUND ;
-			return $find;
-		}
-		$find['message'] = $find;
-		$find['status'] = self::OK;
-		return $find;
+    {
+	$find = $this->repo->findAll();
+	if (empty($find)) {
+	    $find['message'] = ['No board found'];
+	    $find['status'] = self::NOT_FOUND ;
+	    return $find;
 	}
+	$find['message'] = $find;
+	$find['status'] = self::OK;
+	return $find;
+    }
 	
     public function post() : array
     {
