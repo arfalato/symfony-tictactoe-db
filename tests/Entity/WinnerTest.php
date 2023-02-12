@@ -11,13 +11,13 @@ class WinnerTest  extends TestCase
     /**
      * @dataProvider boardDataProvider
      */
-    public function testWinner(array $board) : void
+    public function testWinner(array $board): void
     {
         $winner = new Winner($board['board']);
         $this->assertEquals($board['expected'], $winner->getWinner());
     }
 
-    public function boardDataProvider() : array
+    public function boardDataProvider(): array
     {
         return [
             [['board' => [
@@ -51,13 +51,13 @@ class WinnerTest  extends TestCase
     /**
      * @dataProvider boardDrawDataProvider
      */
-    public function testDraw(array $boardDraw) : void
+    public function testDraw(array $boardDraw): void
     {
         $winner = new Winner($boardDraw['board']);
         $this->assertEquals($boardDraw['expected'], $winner->checkDraw(true));
     }
 
-    public function boardDrawDataProvider() : array
+    public function boardDrawDataProvider(): array
     {
         return [
             [['board' => [

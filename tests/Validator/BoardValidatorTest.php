@@ -11,14 +11,14 @@ class BoardValidatorTest extends TestCase
     /**
      * @dataProvider invalidSymbolDataProvider
      */
-    public function testNotAllowedSymbol(array $invalidSymbol) : void
+    public function testNotAllowedSymbol(array $invalidSymbol): void
     {
         $validator = new BoardValidator();
         $actual = $validator->validateParams($invalidSymbol);
         $this->assertEquals("Not allowed symbol: just 'X' or 'O'", $actual['error'][0]);
     }
 
-    public function invalidSymbolDataProvider() : array
+    public function invalidSymbolDataProvider(): array
     {
         return [[
             ['symbol' => 'U' , 'row' => 0 , 'column' => 0],
@@ -26,7 +26,7 @@ class BoardValidatorTest extends TestCase
         ]];
     }
 
-    public function testEmptySymbol() : void
+    public function testEmptySymbol(): void
     {
         $validator = new BoardValidator();
         $actual = $validator->validateParams(['symbol' => '' , 'row' => 0 , 'column' => 0]);
@@ -36,7 +36,7 @@ class BoardValidatorTest extends TestCase
     /**
      * @dataProvider invalidCoordinatesDataProvider
      */
-    public function testInvalidCoordinates(array $expectedResult, array $input) : void
+    public function testInvalidCoordinates(array $expectedResult, array $input): void
     {
         $validator = new BoardValidator();
         $actual = $validator->validateParams($input);
@@ -44,7 +44,7 @@ class BoardValidatorTest extends TestCase
         $this->assertEquals($expectedResult, $actual);
     }
 
-    public function invalidCoordinatesDataProvider() : array
+    public function invalidCoordinatesDataProvider(): array
     {
         return [
             [
@@ -93,13 +93,13 @@ class BoardValidatorTest extends TestCase
     /**
      * @dataProvider validDataProvider
      */
-    public function testValid(array $valid) : void
+    public function testValid(array $valid): void
     {
         $validator = new BoardValidator();
         $this->assertEquals(['error' => []], $validator->validateParams($valid));
     }
 
-    public function validDataProvider() : array
+    public function validDataProvider(): array
     {
         return [[
             ['symbol' => 'X' , 'row' => 0 , 'column' => 0],

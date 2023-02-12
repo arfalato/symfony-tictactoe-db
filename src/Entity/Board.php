@@ -65,7 +65,7 @@ class Board
         return $this;
     }
 
-    public function switchTurn() : void
+    public function switchTurn(): void
     {
         switch ($this->getTurn()) {
             case 'X':

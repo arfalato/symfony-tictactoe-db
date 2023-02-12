@@ -44,7 +44,7 @@ class BoardController extends AbstractController
    /**
      * @Route("/board/{id}", name="board_delete", methods={"DELETE"})
      */
-    public function delete(int $id) : JsonResponse
+    public function delete(int $id): JsonResponse
     {
         $deleted = $this->service->delete($id);
         return $this->json($deleted['message'], $deleted['status']);

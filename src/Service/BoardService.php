@@ -23,7 +23,7 @@ class BoardService
         $this->board = $board;
     }
     
-    public function findAll() : array
+    public function findAll(): array
     {
         $find = $this->repo->findAll();
         
@@ -41,7 +41,7 @@ class BoardService
         return $find;
     }
     
-    public function post() : array
+    public function post(): array
     {
         $add = $this->repo->add($this->board);
         
@@ -51,7 +51,7 @@ class BoardService
         return $add;
     }
     
-    public function delete(int $id) : array
+    public function delete(int $id): array
     {
         $deleted = $this->repo->delete($id);
         
@@ -69,7 +69,7 @@ class BoardService
         return $deleted;
     }
     
-    public function update(int $id, array $payload) : array
+    public function update(int $id, array $payload): array
     {
         $validator = $this->validator->validateParams((array) $payload);
         

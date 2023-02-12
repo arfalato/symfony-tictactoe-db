@@ -113,7 +113,7 @@ class BoardRepository extends ServiceEntityRepository
         return $result;
     }
     
-    public function delete(int $id) : array
+    public function delete(int $id): array
     {
         $boardToFind = $this->findBoard($id);
         
@@ -126,21 +126,24 @@ class BoardRepository extends ServiceEntityRepository
         return ['id' => $id];
     }
     
-    public function findBoard($id) : ?Board
+    public function findBoard($id): ?Board
     {
         return $this->getEntityManager()->find(Board::class, $id);
     }
     
-    public function findAll() : array
+    public function findAll(): array
     {
         $entityManager = $this->getEntityManager();
         $query = $entityManager->createQuery('SELECT b.grid as board, b.id FROM App\Entity\Board b ORDER BY b.id ASC');
+        
         $result = [];
         $fetch = [];
         $result = array_column($query->getResult(), 'board', 'id');
+        
         foreach ($result as $id => $value){
             $fetch[$id] = unserialize($value);
         }
+        
         return $fetch;
     }
     
