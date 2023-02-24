@@ -13,7 +13,7 @@ class Winner
         $this->grid = $grid;
     }
 
-    public function getWinner() :?string
+    public function getWinner(): ?string
     {
         $rows = $this->checkRowsColumns();
         $columns = $this->checkRowsColumns(false);
@@ -31,7 +31,7 @@ class Winner
         return null;
     }
 
-    private function checkRowsColumns(bool $isRow = true) :?string
+    private function checkRowsColumns(bool $isRow = true): ?string
     {
         for ($row = 0; $row < 3; $row ++) {
             $cell = '';
@@ -51,7 +51,7 @@ class Winner
         return null;
     }
 
-    private function checkDiagonals(bool $isLeft = true):?string
+    private function checkDiagonals(bool $isLeft = true): ?string
     {
         $cell = '';
         for ($i = 0; $i < 3; $i ++) {
@@ -69,7 +69,7 @@ class Winner
         return null;
     }
 
-    private function getWinningSymbol(string $tripleSymbol) : ?string
+    private function getWinningSymbol(string $tripleSymbol): ?string
     {
         $symbolsMap = [
             'XXX' => 'X',
@@ -90,13 +90,12 @@ class Winner
         return !$winner && $fulfilled;
     }
     
-    public function checkGridFulfilled() : bool
+    public function checkGridFulfilled(): bool
     {
         $grid = $this->grid;
         for ($row = 0; $row < 3; $row++) {
             for ($column = 0; $column < 3; $column++) {
                 if (!is_null($grid[$row][$column])) {
-
                     return false;
                 }
             }

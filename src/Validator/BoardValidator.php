@@ -2,15 +2,18 @@
 
 namespace App\Validator;
 
+use RuntimeException;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\Validation;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Component\Validator\Constraints\Collection;
 
 class BoardValidator
 {
-    private $validator;
+    private ValidatorInterface $validator;
 
-    private $constraints;
+    private Collection $constraints;
 
     public function __construct()
     {
@@ -38,15 +41,14 @@ class BoardValidator
         ]);
     }
 
-    public function validateParams(array $params) : array
+    public function validateParams(array $params): array
     {
         $validation['error'] = [];
         $violations = $this->validator->validate($params, $this->constraints);
         if (!$violations instanceof ConstraintViolationList) {
-            throw new \RuntimeException('Invalid violations type.');
+            throw new RuntimeException('Invalid violations type.');
         }
         if ($violations->count() > 0) {
-
             foreach ($violations as $violation) {
                 $validation['error'][] = $violation->getMessage();
             }

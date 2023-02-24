@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use DateTime;
 use App\Entity\Board;
 use App\Entity\Winner;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -30,7 +31,7 @@ class BoardRepository extends ServiceEntityRepository
     {
         $entity->setGrid(self::EMPTY_GRID);
         $entity->setTurn(self::FIRST_MOVE);
-        $entity->setDate(new \DateTime());
+        $entity->setDate(new DateTime());
         
         $this->getEntityManager()->persist($entity);
         $this->getEntityManager()->flush();
@@ -41,7 +42,7 @@ class BoardRepository extends ServiceEntityRepository
         $entity = $this->findBoard($id);
         if (!$entity) {
              return [
-                 'message' => ['error' => 'No Board found for id ' . $id, 'Board' => null], 
+                 'output' => ['error' => 'No Board found for id ' . $id, 'Board' => null],
                  'status' => self::NOT_FOUND
             ];
             
@@ -55,7 +56,7 @@ class BoardRepository extends ServiceEntityRepository
         if(!empty($turn) && $turn != $symbol) {
 
             return [
-                'message' => ['error' => "It's not your turn", 'Board' => $entity->getGrid()], 
+                'output' => ['error' => "It's not your turn", 'Board' => $entity->getGrid()],
                 'status' => self::BAD_REQUEST
             ];
         }
@@ -70,14 +71,14 @@ class BoardRepository extends ServiceEntityRepository
             $entity->switchTurn();
             
             $result = [
-                'message' => ['Board' => $entity->getGrid()], 
+                'output' => ['Board' => $entity->getGrid()],
                 'status' => self::OK
             ] ;
         } else {
 
             return [
-                'message' => ['error'=> "POSITION ALREADY MARKED", 'Board' => $entity->getGrid()], 
-                'status' => self::BAD_REQUEST
+                'output' => ['error'=> "POSITION ALREADY MARKED", 'Board' => $entity->getGrid()],
+                'status' => self::BAD_REQUEST,
             ];
         }
         
@@ -91,25 +92,24 @@ class BoardRepository extends ServiceEntityRepository
         if ($getWinner) {
 
             return [
-                'message' => ['winner' => $getWinner, 'Board' => $entity->getGrid()], 
-                'status' => self::OK
+                'output' => ['winner' => $getWinner, 'Board' => $entity->getGrid()],
+                'status' => self::OK,
             ];
         }
 
         if($draw) {
 
             return [
-                'message' => ['winner' => "DRAW", 'Board' => $entity->getGrid()], 
-                'status' => self::OK
+                'output' => ['winner' => "DRAW", 'Board' => $entity->getGrid()],
+                'status' => self::OK,
             ];
         }
 
         
-        $entity->setDate(new \DateTime());
+        $entity->setDate(new DateTime());
         $this->getEntityManager()->persist($entity);
         $this->getEntityManager()->flush();
-       
-        
+
         return $result;
     }
     
@@ -134,12 +134,15 @@ class BoardRepository extends ServiceEntityRepository
     public function findAll(): array
     {
         $entityManager = $this->getEntityManager();
-        $query = $entityManager->createQuery('SELECT b.grid as board, b.id FROM App\Entity\Board b ORDER BY b.id ASC');
-        
-        $result = [];
+        $query = $entityManager->createQuery(
+            'SELECT b.grid as board, b.id 
+                 FROM App\Entity\Board b 
+                 ORDER BY b.id DESC'
+        );
+
         $fetch = [];
         $result = array_column($query->getResult(), 'board', 'id');
-        
+
         foreach ($result as $id => $value){
             $fetch[$id] = unserialize($value);
         }

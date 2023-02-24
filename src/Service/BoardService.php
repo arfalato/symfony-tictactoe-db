@@ -25,27 +25,28 @@ class BoardService
     
     public function findAll(): array
     {
-        $find = $this->repo->findAll();
+        $findAll = $this->repo->findAll();
+
+        $message = [
+            'output' => ['message' => 'No Board found'],
+            'status' => self::NOT_FOUND,
+        ];
         
-        if (empty($find)) {
-            
-            $find['message'] = ['No board found'];
-            $find['status'] = self::NOT_FOUND ;
-            
-            return $find;
+        if (empty($findAll)) {
+            return $message;
         }
-        
-        $find['message'] = $find;
-        $find['status'] = self::OK;
-        
-        return $find;
+
+        return [
+            'output' => $findAll,
+            'status' => self::OK,
+        ];
     }
     
     public function post(): array
     {
         $add = $this->repo->add($this->board);
         
-        $add['message'] = ['Board' => $this->board->getGrid(), 'id' => $this->board->getId()];
+        $add['output'] = ['Board' => $this->board->getGrid(), 'id' => $this->board->getId()];
         $add['status'] = self::OK; 
         
         return $add;
@@ -57,13 +58,13 @@ class BoardService
         
         if(isset($deleted['error'])) {
             
-            $deleted['message'] = ['error' => 'No Board found for id ' . $id];
+            $deleted['output'] = ['error' => 'No Board found for id ' . $id];
             $deleted['status'] = self::NOT_FOUND;
             
             return $deleted;            
         }
         
-        $deleted['message'] = ['Board' => 'deleted', 'id' => $id];
+        $deleted['output'] = ['Board' => 'deleted', 'id' => $id];
         $deleted['status'] = self::OK; 
         
         return $deleted;
@@ -71,20 +72,22 @@ class BoardService
     
     public function update(int $id, array $payload): array
     {
-        $validator = $this->validator->validateParams((array) $payload);
+        $validator = $this->validator->validateParams($payload);
         
         if (count($validator['error']) > 0) {
             
             $actualBoard = $this->repo->findBoard($id);
-            
-            $update['message'] = $validator + ['Board' => $actualBoard->getGrid()];
+            if(is_null($actualBoard)) {
+                $update['output'] = ['error' => 'No payload and Board not found'];
+                $update['status'] = self::BAD_REQUEST;
+                return $update;
+            }
+            $update['output'] = $validator + ['Board' => $actualBoard->getGrid()];
             $update['status'] = self::BAD_REQUEST;
             
             return $update;
         }
-        
-        $update = $this->repo->update($id, $payload);
-        
-        return $update;
+
+        return $this->repo->update($id, $payload);
     }
 }
